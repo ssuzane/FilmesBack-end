@@ -32,3 +32,7 @@ var filmes = {
       }
     ]
   }
+
+  module.exports = {
+    filmes
+  }
