@@ -9,7 +9,7 @@
 var acmeFilme = require('../model/filmes.js')
 
 
-//Função que lista TODOS os filmes e suas informações, sem critério
+//Função que lista todos os filmes e suas informações
 const getListaDeFilmes = function () {
     let filmes = acmeFilme.filmes.filmes;
     let filmesArray = [];
