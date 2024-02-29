@@ -42,16 +42,19 @@ app.use((request, response, netx) => {
 
 // 01 EndPoint: Listar todos os filmes do arquivo
 app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response){
-    let controleListaFilmes = require('./projeto/controller/controller_filmes.Js')
+    let controleListaFilmes = require('./controller/controller_filmes.Js')
     let filmes = controleListaFilmes.getListaDeFilmes();
     response.json(filmes);
     response.status(200);
 });
 /************************************************************* */
 
-const controllerFilmes = require('./projeto/controller/controller_filmes.Js')
+const controllerFilmes = require('./controller/controller_filmes.Js')
 
 /***************************************************/
+
+//criando um objeto para controlar a chegada dos dados da requisição em formato json
+const bodyParserJSON = bodyParser.json
 
 //versão 2.0 retorna todos od filmes do banco de dados
 app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response){
@@ -82,6 +85,19 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
         response.json({erro:'Item nao encontrado.'})
     }
 });
+
+app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(request, response, netx){
+
+
+    //recebe dodos os dados da requisição pelo body
+    dadosBody = request.body
+
+    //Encaminhar od dados para o controller enviar para o DAO
+    let resultDadosNovoFilme = await controllerFilmes.setIserirNovoFilme(dadosBody)
+
+    response.status(resultDadosNovoFilme.status_code)
+    response.json(resultDadosNovoFilme)
+})
 
 app.listen('8080', function(){
     console.log('rodando')
