@@ -38,38 +38,39 @@ const getListaDeFilmes = function () {
 
 //Função que lista os filmes e suas informações com base em um critério(ID)
 const getFilme = function (id) {
-    let idFilme = Number(id);
-    let filme = acmeFilme.filmes.filmes;
-    let filmeArray = [];
-    let listaFilme = {};
-    let status = false;
 
-    filme.forEach(function (getFilme) {
-        if (getFilme.id == idFilme) {
-            let filmeInfo = {
-                id: getFilme.id,
-                nome: getFilme.nome,
-                sinopse: getFilme.sinopse,
-                duracao: getFilme.duracao,
-                data_lancamento: getFilme.data_lancamento,
-                data_relancamento: getFilme.data_relancamento,
-                foto_capa: getFilme.foto_capa,
-                valor: getFilme.valor_unitario
-                
-            };
-       
-            filmeArray.push(filmeInfo);
-        }
-        status = true;
-    });
+   //Recebe o ID do Filme
+   let idFilme = id;
+   //Cria o objeto JSON
+   let filmesJSON = {};
 
-    listaFilme.filmes = filmeArray;
+   //Validação para verificar se o ID é válido 
+       //(vazio, indefinido ou não numérico)
+   if(idFilme == '' || idFilme == undefined || isNaN(idFilme)){
+       return message.ERROR_INVALID_ID; //400
+   }else{
 
-    if (status) {
-        return listaFilme
-    } else {
-        return false
-    }
+       //Encaminha o ID para o DAO buscar no Banco de dados
+       let dadosFilme =  filmeDAO.selectByIdFilme(idFilme);
+
+       //Verifica se o DAO retornou dados
+       if(dadosFilme){
+
+           //Validação para verificar a quantidade de itens retornados
+           if(dadosFilme.length > 0){
+               //Cria o JSON para retorno
+               filmesJSON.filme = dadosFilme;
+               filmesJSON.status_code = 200;
+
+               return filmesJSON;
+           }else{
+               return message.ERROR_NOT_FOUND; //404
+           }
+       }else{
+           return message.ERROR_INTERNAL_SERVER_DB; //500
+       }
+   }
+   
 };
 
 

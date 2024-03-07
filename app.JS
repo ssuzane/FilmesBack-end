@@ -29,7 +29,7 @@ const app = express();
 
 //configurações das bibliotecas.
 
-app.use((request, response, netx) => {
+app.use((request, response, next) => {
 
     response.header('Aceess-Control-Allow-orgin', '*')
     response.header('Aceess-Control-Allow-Methods', 'Get')
@@ -49,7 +49,7 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
 });
 /************************************************************* */
 
-const controllerFilmes = require('./controller/controller_filmes.Js')
+const controllerFilmes = require('./controller/controller_filme.js')
 
 /***************************************************/
 
@@ -59,7 +59,7 @@ const bodyParserJSON = bodyParser.json
 //versão 2.0 retorna todos od filmes do banco de dados
 app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response){
 
-    let dadosFilmes = await controllerFilmes.getListaDeFilmes()
+    let dadosFilmes = await controllerFilmes.getBuscarFilmes()
 
     if(dadosFilmes){
             response.json(dadosFilmes)
@@ -86,14 +86,14 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
     }
 });
 
-app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(request, response, netx){
+app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(request, response){
 
 
     //recebe dodos os dados da requisição pelo body
     dadosBody = request.body
 
     //Encaminhar od dados para o controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setIserirNovoFilme(dadosBody)
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody)
 
     response.status(resultDadosNovoFilme.status_code)
     response.json(resultDadosNovoFilme)

@@ -8,18 +8,19 @@
 
 //imports dos arqquivos DAO que fara a conexão com banco de dados
 const filmeDAO = require('../model/DAO/filmes')
+const message = require('../modulo/config.js')
 
 
 // função para validar e inserir um novo filme 
-const setInserirNovoFilme = async function(){
+const setInserirNovoFilme = async function(dadosFilmes){
 
     let novoFilmeJSON = {}
 
-    if(dadosFilmes.nome == ""                 || dadosFilmes.nome == undefined              || dadosFilmes.nome.legth > 80             || 
-    dadosFilmes.sinopse == ""                 || dadosFilmes.sinopse == undefined           || dadosFilmes.sinopse.legth > 65000       ||
-    dadosFilmes.duracao == ""                 || dadosFilmes.duracao == undefined           || dadosFilmes.duracao.legth > 8           ||
-    dadosFilmes.data_lancamento == ""         || dadosFilmes.data_lancamento == undefined   || dadosFilmes.data_lancamento.legth != 10 ||
-    dadosFilmes.foto_capa == ""               || dadosFilmes.foto_capa == undefined         || dadosFilmes.foto_capa.legth > 200       ||
+    if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.legth > 80             || 
+    dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.legth > 65000       ||
+    dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.legth > 8           ||
+    dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.legth != 10 ||
+    dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.legth > 200       ||
     dadosFilmes.valor_unitario.legth > 6 
     ){
         return message.ERROR_REQUIERED_FIELDS; //400
@@ -27,17 +28,23 @@ const setInserirNovoFilme = async function(){
 
         let validaStatus = false
 
-        if(dadosFilmes.data_relancamento != null || dadosFilmes.data_relancamento != '')
-
-        if(dadosFilmes.data_relancamento.legth != 10)
-        return message.ERROR_REQUIERED_FIELDS; // 400
-
-    }/*else{
-        validaStatus = true
-
+        //validação da data de relançamento , ja que ela não é obrigatorio no banco de dados 
+        if(dadosFilmes.data_relancamento != null && dadosFilmes.data_relancamento !='' && data_relancamento !=undefined){
+             //Validar para verificar as a data esta com a data de digitos correto
+        if(dadosFilmes.data_relancamento.legth != 10){
+            return message.ERROR_REQUIERED_FIELDS; // 400
+        }else{
+            validaStatus = true
+    
+        }
+        
     }else{
         validaStatus = true
-    }*/
+
+    }
+
+    //validaçãopara verificar s podemos encaminhar os dados para o DAO
+    if(validaStatus){
         let novoFilme = await filmeDAO.insertFilme(dadosFilmes);
 
         //validação para verifivar se o DAO inseriu os dados do BD
@@ -53,8 +60,12 @@ const setInserirNovoFilme = async function(){
         }else{
             return message.ERROR_REQUIERED_FIELDS; //500
         }
-
+        
     }
+        
+
+}
+}
 
 // função para validar e atualizar um filme 
 const setAtulizarFilme = async function(){
@@ -100,11 +111,9 @@ const getBuscarFilmes = async function(){
 }
 
 module.exports = {
-
     setInserirNovoFilme,
     setAtulizarFilme,
     setExcluirFilme,
     getListarFilmes,
     getBuscarFilmes
-
 }

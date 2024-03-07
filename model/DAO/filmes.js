@@ -17,27 +17,58 @@ const insertFilme = async function(dadosFilme){
 // função para inserir um filme no BD
 
         try{
-                let sql = `insert into tbl_filme (nome,
-                                                sinopse,
-                                                duracao,
-                                                data_lancamento,
-                                                data_relancamento,
-                                                foto_capa,
-                                                valor_unitario
-                                                 
-                 ) values(
-            
-                                                '${dadosFilme.nome}',
-                                                '${dadosFilme.sinopse}',
-                                                '${dadosFilme.duracao}',
-                                                '${dadosFilme.data_lancamento}',
-                                                ${dadosFilme.data_relancamento}',
-                                                '${dadosFilme.foto_capa}',
-                                                '${dadosFilme.valor_unitario}',
-            
-                 )            
-                                       
-                    )`;
+
+            let sql;
+
+            if(dadosFilme.data_relancamento !='' && dadosFilme.data_relancamento != null && dadosFilme.data_relancamento != undefined){
+                
+                sql = `insert into tbl_filme (nome,
+                    sinopse,
+                    duracao,
+                    data_lancamento,
+                    data_relancamento,
+                    foto_capa,
+                    valor_unitario
+                     
+      ) values(
+
+                    '${dadosFilme.nome}',
+                    '${dadosFilme.sinopse}',
+                    '${dadosFilme.duracao}',
+                    '${dadosFilme.data_lancamento}',
+                    ${dadosFilme.data_relancamento}',
+                    '${dadosFilme.foto_capa}',
+                    '${dadosFilme.valor_unitario}',
+
+)            
+           
+)`;
+            }else{
+
+                sql = `insert into tbl_filme (nome,
+                    sinopse,
+                    duracao,
+                    data_lancamento,
+                    data_relancamento,
+                    foto_capa,
+                    valor_unitario
+                     
+) values(
+
+                    '${dadosFilme.nome}',
+                    '${dadosFilme.sinopse}',
+                    '${dadosFilme.duracao}',
+                    '${dadosFilme.data_lancamento}',
+                    ${dadosFilme.data_relancamento}',
+                    '${dadosFilme.foto_capa}',
+                    '${dadosFilme.valor_unitario}',
+
+)            
+           
+)`;
+
+            }
+                
             
                     //$executeRawUnsafe() - serve para executar scripts sem retorno de dados
                     //(insert, updade dele)
@@ -88,6 +119,20 @@ const selectAllFilmes = async function(){
 
 // função para buscar um filme no BD filtrando pelo ID
 const selectById = async function(){
+
+    try {
+        //Script SQL para filtrar pelo ID
+        let sql = `select * from tbl_filme where id = ${id}`;
+    
+        //Executa o SQL no Banco de dados
+        let rsFilme = await prisma.$queryRawUnsafe(sql);
+
+        return rsFilme;
+
+    } catch (error) {
+        return false;
+    }
+    
 
 }
 
