@@ -32,12 +32,12 @@ const setInserirNovoFilme = async function(){
         if(dadosFilmes.data_relancamento.legth != 10)
         return message.ERROR_REQUIERED_FIELDS; // 400
 
-    }else{
+    }/*else{
         validaStatus = true
 
     }else{
         validaStatus = true
-    }
+    }*/
         let novoFilme = await filmeDAO.insertFilme(dadosFilmes);
 
         //validação para verifivar se o DAO inseriu os dados do BD
