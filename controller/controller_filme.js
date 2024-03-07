@@ -16,22 +16,28 @@ const setInserirNovoFilme = async function(dadosFilmes){
 
     let novoFilmeJSON = {}
 
-    if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.legth > 80             || 
-    dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.legth > 65000       ||
-    dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.legth > 8           ||
-    dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.legth != 10 ||
-    dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.legth > 200       ||
+    if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.length > 80             || 
+    dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.length > 65000       ||
+    dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.length > 8           ||
+    dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.length != 10 ||
+    dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.length > 200       ||
     dadosFilmes.valor_unitario.legth > 6 
     ){
+
+        console.log("akjsdka")
         return message.ERROR_REQUIERED_FIELDS; //400
     }else{
 
+    
         let validaStatus = false
 
         //validação da data de relançamento , ja que ela não é obrigatorio no banco de dados 
-        if(dadosFilmes.data_relancamento != null && dadosFilmes.data_relancamento !='' && data_relancamento !=undefined){
+        if(dadosFilmes.data_relancamento != null && dadosFilmes.data_relancamento !='' && dadosFilmes.data_relancamento !=undefined){
+
              //Validar para verificar as a data esta com a data de digitos correto
-        if(dadosFilmes.data_relancamento.legth != 10){
+        if(dadosFilmes.data_relancamento.length != 10){
+
+            console.log("kljasldkja")
             return message.ERROR_REQUIERED_FIELDS; // 400
         }else{
             validaStatus = true
@@ -58,7 +64,7 @@ const setInserirNovoFilme = async function(dadosFilmes){
 
             return novoFilmeJSON; //201
         }else{
-            return message.ERROR_REQUIERED_FIELDS; //500
+            return message.ERRO_INTERNAL_SERVER_DB; //500
         }
         
     }

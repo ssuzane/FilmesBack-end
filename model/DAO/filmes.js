@@ -36,12 +36,10 @@ const insertFilme = async function(dadosFilme){
                     '${dadosFilme.sinopse}',
                     '${dadosFilme.duracao}',
                     '${dadosFilme.data_lancamento}',
-                    ${dadosFilme.data_relancamento}',
+                    '${dadosFilme.data_relancamento}',
                     '${dadosFilme.foto_capa}',
-                    '${dadosFilme.valor_unitario}',
-
-)            
-           
+                    '${dadosFilme.valor_unitario}'
+          
 )`;
             }else{
 
@@ -59,12 +57,10 @@ const insertFilme = async function(dadosFilme){
                     '${dadosFilme.sinopse}',
                     '${dadosFilme.duracao}',
                     '${dadosFilme.data_lancamento}',
-                    ${dadosFilme.data_relancamento}',
+                      null,
                     '${dadosFilme.foto_capa}',
-                    '${dadosFilme.valor_unitario}',
-
-)            
-           
+                    '${dadosFilme.valor_unitario}'
+        
 )`;
 
             }
@@ -74,7 +70,8 @@ const insertFilme = async function(dadosFilme){
                     //(insert, updade dele)
                     //$queryRawUnsafe() - serve para executar script com retorno de dados (select)
                                         
-                let result = await prisma.$executeRawUnsafe(sql);                                 
+                console.log(sql)
+                    let result = await prisma.$executeRawUnsafe(sql);                                 
             
                 if(result)
                     return true;
