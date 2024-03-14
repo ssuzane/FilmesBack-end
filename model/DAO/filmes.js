@@ -89,10 +89,13 @@ const insertFilme = async function(dadosFilme){
 // função para atualizar um filme no BD
 const uptadeFile = async function (){
 
+
 }
 
 // função para excluir um filme no BD
 const deleteFilmes = async function(){
+
+    let sql = 'delete from tbl_filmes where {*id}'
 
 }
 

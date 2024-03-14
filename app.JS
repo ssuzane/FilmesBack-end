@@ -88,16 +88,24 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
 
 app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(request, response){
 
+    //recebe a content-type  como o tipo de dados encaminhado da requisição
+    let contentType = request.headers['content-type']
 
     //recebe dodos os dados da requisição pelo body
-    dadosBody = request.body
+    let dadosBody = request.body
 
     //Encaminhar od dados para o controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody)
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType)
 
     response.status(resultDadosNovoFilme.status_code)
     response.json(resultDadosNovoFilme)
 })
+
+app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,response){
+
+    
+})
+
 
 app.listen('8080', function(){
     console.log('rodando')

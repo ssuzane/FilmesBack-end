@@ -12,65 +12,78 @@ const message = require('../modulo/config.js')
 
 
 // função para validar e inserir um novo filme 
-const setInserirNovoFilme = async function(dadosFilmes){
+const setInserirNovoFilme = async function(dadosFilmes, contentType){
 
-    let novoFilmeJSON = {}
+    try{
+        console.log(contentType)
+        if(String(contentType).toLowerCase() == 'application/json') {
 
-    if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.length > 80             || 
-    dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.length > 65000       ||
-    dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.length > 8           ||
-    dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.length != 10 ||
-    dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.length > 200       ||
-    dadosFilmes.valor_unitario.legth > 6 
-    ){
-
-        console.log("akjsdka")
-        return message.ERROR_REQUIERED_FIELDS; //400
-    }else{
-
-    
-        let validaStatus = false
-
-        //validação da data de relançamento , ja que ela não é obrigatorio no banco de dados 
-        if(dadosFilmes.data_relancamento != null && dadosFilmes.data_relancamento !='' && dadosFilmes.data_relancamento !=undefined){
-
-             //Validar para verificar as a data esta com a data de digitos correto
-        if(dadosFilmes.data_relancamento.length != 10){
-
-            console.log("kljasldkja")
-            return message.ERROR_REQUIERED_FIELDS; // 400
-        }else{
-            validaStatus = true
-    
-        }
+            //criar o objeto json 
+            let novoFilmeJSON = {}
         
-    }else{
-        validaStatus = true
-
+            if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.length > 80             || 
+            dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.length > 65000       ||
+            dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.length > 8           ||
+            dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.length != 10 ||
+            dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.length > 200       ||
+            dadosFilmes.valor_unitario.legth > 6 
+            ){
+        
+                
+                return message.ERROR_REQUIERED_FIELDS; //400
+            }else{
+        
+            
+                let validaStatus = false
+        
+                //validação da data de relançamento , ja que ela não é obrigatorio no banco de dados 
+                if(dadosFilmes.data_relancamento != null && dadosFilmes.data_relancamento !='' && dadosFilmes.data_relancamento !=undefined){
+        
+                     //Validar para verificar as a data esta com a data de digitos correto
+                if(dadosFilmes.data_relancamento.length != 10){
+        
+                    
+                    return message.ERROR_REQUIERED_FIELDS; // 400
+                }else{
+                    validaStatus = true
+            
+                }
+                
+            }else{
+                validaStatus = true
+        
+            }
+        
+            //validaçãopara verificar s podemos encaminhar os dados para o DAO
+            if(validaStatus){
+                let novoFilme = await filmeDAO.insertFilme(dadosFilmes);
+        
+                //validação para verifivar se o DAO inseriu os dados do BD
+                if(novoFilme){
+        
+                    //Criar o Json de retorno dos dados //201
+                    novoFilmeJSON.filme = dadosFilmes
+                    novoFilmeJSON.status = message.SUCESS_CREATED_ITEM.status
+                    novoFilmeJSON.status_code = message.SUCESS_CREATED_ITEM.status_code
+                    novoFilmeJSON.message = message.SUCESS_CREATED_ITEM.message
+        
+                    return novoFilmeJSON; //201
+                }else{
+                    return message.ERRO_INTERNAL_SERVER_DB; //500
+                }
+                
+             }
+                
+           }
+        
+          }else{
+            return message.ERRO_CONTENT_TYPE // 415
+          }
+    
+    }catch(error){
+        return message.ERRO_CONTENT_TYPE // 500
     }
 
-    //validaçãopara verificar s podemos encaminhar os dados para o DAO
-    if(validaStatus){
-        let novoFilme = await filmeDAO.insertFilme(dadosFilmes);
-
-        //validação para verifivar se o DAO inseriu os dados do BD
-        if(novoFilme){
-
-            //Criar o Json de retorno dos dados (201)
-            novoFilmeJSON.filme = dadosFilmes
-            novoFilmeJSON.status = message.SUCESS_CREATED_ITEM.status
-            novoFilmeJSON.status_code = message.SUCESS_CREATED_ITEM.status_code
-            novoFilmeJSON.message = message.SUCESS_CREATED_ITEM.message
-
-            return novoFilmeJSON; //201
-        }else{
-            return message.ERRO_INTERNAL_SERVER_DB; //500
-        }
-        
-    }
-        
-
-}
 }
 
 // função para validar e atualizar um filme 
