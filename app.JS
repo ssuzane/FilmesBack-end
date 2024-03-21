@@ -101,6 +101,8 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(reques
     response.json(resultDadosNovoFilme)
 })
 
+
+
 app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,response){
 
     

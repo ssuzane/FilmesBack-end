@@ -89,13 +89,68 @@ const insertFilme = async function(dadosFilme){
 // função para atualizar um filme no BD
 const uptadeFile = async function (){
 
+    try {
+
+        let sql
+
+        if(dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == '' || dadosFilme.data_relancamento == undefined){    
+            
+            sql = `update tbl_filme set 
+                                        nome = '${dadosFilme.nome}',
+                                        sinopse = '${dadosFilme.sinopse}',
+                                        duracao = '${dadosFilme.duracao}',
+                                        data_lancamento = '${dadosFilme.data_lancamento}',
+                                        data_relancamento = null,
+                                        foto_capa = '${dadosFilme.foto_capa}',
+                                        valor_unitario = ${dadosFilme.valor_unitario}
+                                    where id = ${id}`
+            
+        } else {
+
+            sql = `update tbl_filme set 
+                                        nome = '${dadosFilme.nome}',
+                                        sinopse = '${dadosFilme.sinopse}',
+                                        duracao = '${dadosFilme.duracao}',
+                                        data_lancamento = '${dadosFilme.data_lancamento}',
+                                        data_relancamento = '${dadosFilme.data_relancamento}',
+                                        foto_capa = '${dadosFilme.foto_capa}',
+                                        valor_unitario = ${dadosFilme.valor_unitario}
+                                    where id = ${id}`
+
+        }
+
+        // Executa o sciptSQL no DB (devemos usar o comando execute e não o query)
+        // O comando execute deve ser utilizado para INSERT, UPDATE, DELETE
+        let resultStatus = await prisma.$executeRawUnsafe(sql)
+        console.log(sql)
+
+        // Validação para verificar se o insert funcionou no DB
+        if(resultStatus)
+            return true
+        else
+            return false
+
+    } catch (error) {
+        
+        return false
+
+    }
 
 }
 
 // função para excluir um filme no BD
 const deleteFilmes = async function(){
 
-    let sql = 'delete from tbl_filmes where {*id}'
+    try {
+        let sql = `delete from tbl_filme where id = ${id}`
+
+
+        let rsFilme = await prisma.$executeRawUnsafe(sql)
+
+        return rsFilme
+    } catch (error) {
+        return false
+    }
 
 }
 
@@ -112,7 +167,7 @@ const selectAllFilmes = async function(){
     //validação para retornar os dados.
     if(rsFilmes.length > 0)
         return rsFilmes
-    else
+    else (error)
         return false
 
 }
