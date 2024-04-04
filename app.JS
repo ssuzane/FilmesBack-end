@@ -59,7 +59,7 @@ const bodyParserJSON = bodyParser.json
 //versão 2.0 retorna todos od filmes do banco de dados
 app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response){
 
-    let dadosFilmes = await controllerFilmes.getBuscarFilmes()
+    let dadosFilmes = await controllerFilmes.getListarFilmes()
 
     if(dadosFilmes){
             response.json(dadosFilmes)
