@@ -157,7 +157,7 @@ const deleteFilmes = async function(){
 // função para listar todos os filmes do BD
 const selectAllFilmes = async function(){
 
-    let sql = 'select * from tbl_filmes'
+    let sql = 'select * from tbl_filme'
 
     //queryRawUnsafe = para conseguir pegar as concatenações dos scripts
 
