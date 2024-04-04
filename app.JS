@@ -73,8 +73,10 @@ app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response)
     
 // 02 Endpoint: Listar os filmes e suas informações com base no id
 app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response){
+
     let id = request.query.id
     let controleListaFilmes = require('./controller/controller_function.Js')
+    
     let filmes = controleListaFilmes.getFilme(id);
 
     if(filmes){

@@ -7,7 +7,7 @@
  *****************************************************************************************************/
 
 //imports dos arqquivos DAO que fara a conexão com banco de dados
-const filmeDAO = require('../model/DAO/filmes')
+const filmeDAO = require('../model/DAO/filmes.js')
 const message = require('../modulo/config.js')
 
 
