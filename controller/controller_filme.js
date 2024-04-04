@@ -128,7 +128,7 @@ const setAtulizarFilme = async function(){
                 if(dadosValidated){
         
                     //Envia os dados para a model inserir no BD
-                    let filmeAtualizado = await filmesDAO.updateFilme(dadosFilme, idFilme)
+                    let filmeAtualizado = await filmesDAO.uptadeFile(dadosFilme, idFilme)
                                            
                     // Adiciona o ID do Filme no JSON para retornar
                     dadosFilme.id = idFilme
@@ -165,7 +165,6 @@ const setAtulizarFilme = async function(){
 
 }
 
-
 // função para validar e exclui um filme 
 const setExcluirFilme = async function(){
 
@@ -188,7 +187,7 @@ const setExcluirFilme = async function(){
 
         } else {
             
-            let resultDados = await filmesDAO.deleteFilme(idFilme)
+            let resultDados = await filmesDAO.deleteFilmes(idFilme)
 
             // Validação para verificar se os dados no servidor foram processados
             if(resultDados){                
@@ -209,7 +208,6 @@ const setExcluirFilme = async function(){
 
 
 }
-
 
 // função para retornar todos os filmes
 const getListarFilmes = async function(){

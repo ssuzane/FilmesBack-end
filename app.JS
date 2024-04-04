@@ -47,6 +47,23 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
     response.json(filmes);
     response.status(200);
 });
+
+// 02 Endpoint: Listar os filmes e suas informações com base no id
+app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response){
+
+    let id = request.query.id
+    let controleListaFilmes = require('./controller/controller.js')
+
+    let filmes = controleListaFilmes.getBuscarFilmes(id);
+
+    if(filmes){
+        response.json(filmes);
+        response.status(200);
+    } else{
+        response.status(404)
+        response.json({erro:'Item nao encontrado.'})
+    }
+});
 /************************************************************* */
 
 const controllerFilmes = require('./controller/controller_filme.js')
@@ -71,6 +88,7 @@ app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response)
     
 });
 
+//buscar filme diacordo com o ID
 app.get('/v2/AcmeFilmes/BuscarFilmes', cors(), async function(request, response){
 
     let idfilme = await controllerFilmes.getBuscarFilmes()
@@ -79,30 +97,14 @@ app.get('/v2/AcmeFilmes/BuscarFilmes', cors(), async function(request, response)
         response.json(idfilme)
         response.status(200)
     }else{
-        request.json({message: 'Filme não encontrado.'})
+        response.json({message: 'Filme não encontrado.'})
         response.status(400)
     }
 
 })
     
-// 02 Endpoint: Listar os filmes e suas informações com base no id
-app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response){
-
-    let id = request.query.id
-    let controleListaFilmes = require('./controller/controller.js')
-
-    let filmes = controleListaFilmes.getBuscarFilmes(id);
-
-    if(filmes){
-        response.json(filmes);
-        response.status(200);
-    } else{
-        response.status(404)
-        response.json({erro:'Item nao encontrado.'})
-    }
-});
-
-app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(request, response){
+//iserir um novo filme
+app.post('/v2/AcmeFilmes/Inerirfilme', cors(), bodyParserJSON(), async function(request, response){
 
     //recebe a content-type  como o tipo de dados encaminhado da requisição
     let contentType = request.headers['content-type']
@@ -117,14 +119,26 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON(), async function(reques
     response.json(resultDadosNovoFilme)
 })
 
-
-
+//deletar um filme 
 app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,response){
 
-    
+    let deleteFilme = await controllerFilmes.setExcluirFilme()
+
+    if(dadosFilmes){
+        response.json(idfilme)
+        response.status(200)
+    }else{
+        response.json({message: 'Não foi possivel excluir o filme'})
+        response.status(400)
+    }
 })
 
+//atualizar o filme 
+app.put('/v2/AcmeFilmes/AtualizarFilme', cors(), async function(resquest, response){
 
+})
+
+// app rondado
 app.listen('8080', function(){
     console.log('rodando')
 })

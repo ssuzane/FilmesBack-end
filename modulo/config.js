@@ -1,7 +1,7 @@
 
 /************************************************** menssagem de error *****************************************/
 
-const ERROR_INVALID_ID = {status: false, status_code: 400, message: 'O ID ncaminhado na requisição não é valido'};
+const ERROR_INVALID_ID = {status: false, status_code: 400, message: 'O ID não encaminhado na requisição não é valido'};
 
 const ERROR_REQUIERED_FIELDS = {status: false, status_code: 400, message: 'existem campos requiridos que não foram preenchidos, ou ateem os criterios de digitaão'};
 
