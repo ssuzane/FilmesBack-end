@@ -65,19 +65,33 @@ app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response)
             response.json(dadosFilmes)
             response.status(200)
     }else{
-    response.json({message: 'Nenhum registro foi encontrado'})
+    response.json({message: 'Nenhum registro foi encontrado.'})
     response.status(404)
     }   
     
 });
+
+app.get('/v2/AcmeFilmes/BuscarFilmes', cors(), async function(request, response){
+
+    let idfilme = await controllerFilmes.getBuscarFilmes()
+
+    if(dadosFilmes){
+        response.json(idfilme)
+        response.status(200)
+    }else{
+        request.json({message: 'Filme não encontrado.'})
+        response.status(400)
+    }
+
+})
     
 // 02 Endpoint: Listar os filmes e suas informações com base no id
 app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response){
 
     let id = request.query.id
-    let controleListaFilmes = require('./controller/controller_function.Js')
-    
-    let filmes = controleListaFilmes.getFilme(id);
+    let controleListaFilmes = require('./controller/controller.js')
+
+    let filmes = controleListaFilmes.getBuscarFilmes(id);
 
     if(filmes){
         response.json(filmes);
