@@ -241,7 +241,6 @@ const getListarFilmes = async function(){
 const getBuscarFilmes = async function(){
     let filmesJson = {}
 
-    console.log()
     let dadosFilmes = await filmeDAO.selectAllFilmes()
 
     if (dadosFilmes) {
