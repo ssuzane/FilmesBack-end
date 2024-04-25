@@ -192,7 +192,6 @@ const selectById = async function(){
 }
 
 const selectUsuarios = async function(){
-    let sql 'select '
 }
 
 // exportando
@@ -202,6 +201,7 @@ module.exports = {
     uptadeFile,
     deleteFilmes,
     selectAllFilmes,
-    selectById
+    selectById,
+    selectUsuarios
 
 }
