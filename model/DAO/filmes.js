@@ -190,10 +190,6 @@ const selectById = async function(){
     
 
 }
-
-const selectUsuarios = async function(){
-}
-
 // exportando
 module.exports = {
 
@@ -202,6 +198,4 @@ module.exports = {
     deleteFilmes,
     selectAllFilmes,
     selectById,
-    selectUsuarios
-
 }

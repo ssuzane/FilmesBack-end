@@ -104,7 +104,7 @@ app.get('/v2/AcmeFilmes/BuscarFilmes', cors(), async function(request, response)
 })
     
 //iserir um novo filme
-app.post('/v2/AcmeFilmes/Inerirfilme', cors(), bodyParserJSON(), async function(request, response){
+app.post('/v2/AcmeFilmes/Inserirfilme', cors(), bodyParserJSON(), async function(request, response){
 
     //recebe a content-type  como o tipo de dados encaminhado da requisição
     let contentType = request.headers['content-type']
