@@ -89,9 +89,11 @@ app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response)
 });
 
 //buscar filme diacordo com o ID
-app.get('/v2/AcmeFilmes/BuscarFilmes', cors(), async function(request, response){
+app.get('/v2/AcmeFilmes/BuscarFilmes/:id', cors(), async function(request, response){
 
-    let idfilme = await controllerFilmes.getBuscarFilmes()
+    let idfilme = request.params.id 
+
+    let dadosFilmes =  await controllerFilmes.getBuscarFilmes()
 
     if(dadosFilmes){
         response.json(idfilme)
