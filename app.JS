@@ -93,10 +93,10 @@ app.get('/v2/AcmeFilmes/BuscarFilmes/:id', cors(), async function(request, respo
 
     let idfilme = request.params.id 
 
-    let dadosFilmes =  await controllerFilmes.getBuscarFilmes()
+    let dadosFilmes =  await controllerFilmes.getBuscarFilmes(idfilme)
 
     if(dadosFilmes){
-        response.json(idfilme)
+        response.json(dadosFilmes)
         response.status(200)
     }else{
         response.json({message: 'Filme não encontrado.'})
