@@ -6,6 +6,7 @@
  * 
  *****************************************************************************************************/
 
+
 //imports dos arqquivos DAO que fara a conexão com banco de dados
 const filmeDAO = require('../model/DAO/filmes.js')
 const message = require('../modulo/config.js')
@@ -175,17 +176,15 @@ const setExcluirFilme = async function(){
 
     try {
         
-        //Recebe o id do filme
         let idFilme = id
 
         let validacaoFilmes = await getBuscarFilme(idFilme)
 
-        // Validação para ID vazio, indefinido
         if(idFilme == '' || idFilme == undefined || isNaN(idFilme)){
 
             return message.ERROR_INVALID_ID // 400
 
-        // Validação se o item existe 
+        
         } else if (validacaoFilmes.status == false) {
             
             return message.ERROR_NOT_FOUND // 404
@@ -194,7 +193,7 @@ const setExcluirFilme = async function(){
             
             let resultDados = await filmeDAO.deleteFilmes(idFilme)
 
-            // Validação para verificar se os dados no servidor foram processados
+
             if(resultDados){                
                     
                 return message.SUCESS_CREATED_ITEM // 200
@@ -223,7 +222,7 @@ const getListarFilmes = async function(){
     //chamar a função para chamar todos os filmes
     let dadosFilmes = await filmeDAO.selectAllFilmes()
 
-    //vailidacção para verificar se existem dados dos filmes 
+    //vailidação para verificar se existem dados dos filmes 
     if(dadosFilmes ){
 
         //cria um JSON para devolve o app 
@@ -261,7 +260,7 @@ const getBuscarFilmes = async function(id){
         return message.ERRO_INTERNAL_SERVER_DB
     }
 }
-
+// função para buscar filme pelo id v2
 const getBuscarFilme = async function(id) {
     let idFilme = id
 
@@ -270,7 +269,7 @@ const getBuscarFilme = async function(id) {
     if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
         return message.ERROR_INVALID_ID
     } else {
-        let dadosFilme = await filmesDAO.selectFilmeById(idFilme)
+        let dadosFilme = await filmeDAO.selectById(idFilme)
 
         if (dadosFilme) {
 
@@ -288,10 +287,13 @@ const getBuscarFilme = async function(id) {
     }
 }
 
+
+
 module.exports = {
     setInserirNovoFilme,
     setAtulizarFilme,
     setExcluirFilme,
     getListarFilmes,
-    getBuscarFilmes
+    getBuscarFilmes,
+    
 }

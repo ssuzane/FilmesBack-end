@@ -128,7 +128,7 @@ const uptadeFile = async function (dadosFilme, idfilme){
 
         // Executa o sciptSQL no DB (devemos usar o comando execute e não o query)
         // O comando execute deve ser utilizado para INSERT, UPDATE, DELETE
-        
+
         let resultStatus = await prisma.$executeRawUnsafe(sql)
 
         // Validação para verificar se o insert funcionou no DB
@@ -152,9 +152,9 @@ const deleteFilmes = async function(){
         let sql = `delete from tbl_filme where id = ${id}`
 
 
-        let rsFilme = await prisma.$executeRawUnsafe(sql)
+        let rsFilmeex = await prisma.$executeRawUnsafe(sql)
 
-        return rsFilme
+        return rsFilmeex
     } catch (error) {
         return false
     }
@@ -171,7 +171,7 @@ const selectAllFilmes = async function(){
     //nao esqueça do await
     let rsFilmes = await prisma.$queryRawUnsafe(sql)
 
-    //validação para retornar os dados.
+    
     if(rsFilmes.length > 0)
         return rsFilmes
     else (error)
@@ -183,10 +183,9 @@ const selectAllFilmes = async function(){
 const selectById = async function(id){
 
     try {
-        //Script SQL para filtrar pelo ID
+        
         let sql = `select * from tbl_filme where id = ${id}`;
     
-        //Executa o SQL no Banco de dados
         let rsFilme = await prisma.$queryRawUnsafe(sql);
 
         return rsFilme;
@@ -198,6 +197,8 @@ const selectById = async function(id){
     
 
 }
+
+
 // exportando
 module.exports = {
 
@@ -205,5 +206,5 @@ module.exports = {
     uptadeFile,
     deleteFilmes,
     selectAllFilmes,
-    selectById,
+    selectById
 }

@@ -67,6 +67,7 @@ app.get('/v1/AcmeFilmes/ListarFilmes', cors(), async function(request, response)
 /************************************************************* */
 
 const controllerFilmes = require('./controller/controller_filme.js')
+const controllerAtor = require('./controller/controller_ator.js')
 
 /***************************************************/
 
@@ -139,21 +140,54 @@ app.put('/v2/AcmeFilmes/AtualizarFilme/:id', cors(), bodyParserJSON, async funct
 
 })
 
-
-
 //deletar um filme 
-app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,response){
+app.delete('/v2/acmefilmes/filme/deletar/:id', cors(), async function(request,response){
 
     let deleteFilme = await controllerFilmes.setExcluirFilme()
 
-    if(dadosFilmes){
+    let idfilme = request.params.id 
+
+    if(deleteFilme){
         response.json(idfilme)
         response.status(200)
     }else{
-        response.json({message: 'Não foi possivel excluir o filme'})
+        response.json({message: 'Não foi possivel excluir esse filme'})
         response.status(400)
     }
 })
+
+
+//___________________________________________________________________________________//
+
+app.get('/v2/AcmeFilmes/listarAtores', cors(), async function(request, response){
+
+
+    let dadosAtores = await controllerAtor.getListarAtores()
+
+    if(dadosAtores){
+        response.json(dadosAtores)
+        response.status(200)
+    }else{
+        response.json({message: 'Nenhum registro encontrado'})
+        response.status(404)
+    }
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // app rondado
