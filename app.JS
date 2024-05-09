@@ -71,7 +71,7 @@ const controllerFilmes = require('./controller/controller_filme.js')
 /***************************************************/
 
 //criando um objeto para controlar a chegada dos dados da requisição em formato json
-const bodyParserJSON = bodyParser.json
+const bodyParserJSON = bodyParser.json()
 
 //versão 2.0 retorna todos od filmes do banco de dados
 app.get('/v2/AcmeFilmes/listarFilmes', cors(), async function(request, response){
@@ -106,7 +106,7 @@ app.get('/v2/AcmeFilmes/BuscarFilmes/:id', cors(), async function(request, respo
 })
     
 //iserir um novo filme
-app.post('/v2/AcmeFilmes/Inserirfilme', cors(), bodyParserJSON(), async function(request, response){
+app.post('/v2/AcmeFilmes/Inserirfilme', cors(), bodyParserJSON, async function(request, response){
 
     //recebe a content-type  como o tipo de dados encaminhado da requisição
     let contentType = request.headers['content-type']
@@ -120,6 +120,26 @@ app.post('/v2/AcmeFilmes/Inserirfilme', cors(), bodyParserJSON(), async function
     response.status(resultDadosNovoFilme.status_code)
     response.json(resultDadosNovoFilme)
 })
+
+//atualizar o filme 
+app.put('/v2/AcmeFilmes/AtualizarFilme/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let contentType = request.headers['content-type']
+
+
+    let dadosBody = request.body
+
+    let idfilme = request.params.id 
+
+    let resultUpdateNovoFilme = await controllerFilmes.setAtulizarFilme(dadosBody, contentType, idfilme)
+
+    response.status(resultUpdateNovoFilme.status_code)
+    response.json(resultUpdateNovoFilme)
+
+
+})
+
+
 
 //deletar um filme 
 app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,response){
@@ -135,10 +155,6 @@ app.delete('/v2/acmefilmes/filme/deletar', cors(), async function(request,respon
     }
 })
 
-//atualizar o filme 
-app.put('/v2/AcmeFilmes/AtualizarFilme', cors(), async function(resquest, response){
-
-})
 
 // app rondado
 app.listen('8080', function(){

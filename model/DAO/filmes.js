@@ -28,7 +28,8 @@ const insertFilme = async function(dadosFilme){
                     data_lancamento,
                     data_relancamento,
                     foto_capa,
-                    valor_unitario
+                    valor_unitario,
+                    id_classificacao
                      
       ) values(
 
@@ -38,7 +39,8 @@ const insertFilme = async function(dadosFilme){
                     '${dadosFilme.data_lancamento}',
                     '${dadosFilme.data_relancamento}',
                     '${dadosFilme.foto_capa}',
-                    '${dadosFilme.valor_unitario}'
+                    '${dadosFilme.valor_unitario}',
+                     ${dadosFilme.id_classificacao}
           
 )`;
             }else{
@@ -49,7 +51,8 @@ const insertFilme = async function(dadosFilme){
                     data_lancamento,
                     data_relancamento,
                     foto_capa,
-                    valor_unitario
+                    valor_unitario,
+                    id_classificacao
                      
 ) values(
 
@@ -59,7 +62,8 @@ const insertFilme = async function(dadosFilme){
                     '${dadosFilme.data_lancamento}',
                       null,
                     '${dadosFilme.foto_capa}',
-                    '${dadosFilme.valor_unitario}'
+                    '${dadosFilme.valor_unitario}',
+                    ${dadosFilme.id_classificacao}
         
 )`;
 
@@ -81,13 +85,14 @@ const insertFilme = async function(dadosFilme){
         } 
         
         catch(error) {
+            console.log(error)
             return false
         }
         
 }
 
 // função para atualizar um filme no BD
-const uptadeFile = async function (){
+const uptadeFile = async function (dadosFilme, idfilme){
 
     try {
 
@@ -102,8 +107,9 @@ const uptadeFile = async function (){
                                         data_lancamento = '${dadosFilme.data_lancamento}',
                                         data_relancamento = null,
                                         foto_capa = '${dadosFilme.foto_capa}',
-                                        valor_unitario = ${dadosFilme.valor_unitario}
-                                    where id = ${id}`
+                                        valor_unitario = ${dadosFilme.valor_unitario},
+                                        id_classificacao = ${dadosFilme.id_classificacao},
+                                        where id = ${idfilme}`
             
         } else {
 
@@ -114,15 +120,16 @@ const uptadeFile = async function (){
                                         data_lancamento = '${dadosFilme.data_lancamento}',
                                         data_relancamento = '${dadosFilme.data_relancamento}',
                                         foto_capa = '${dadosFilme.foto_capa}',
-                                        valor_unitario = ${dadosFilme.valor_unitario}
-                                    where id = ${id}`
+                                        valor_unitario = ${dadosFilme.valor_unitario},
+                                        id_classificacao = ${dadosFilme.id_classificacao}
+                                        where id = ${idfilme}`
 
         }
 
         // Executa o sciptSQL no DB (devemos usar o comando execute e não o query)
         // O comando execute deve ser utilizado para INSERT, UPDATE, DELETE
+        
         let resultStatus = await prisma.$executeRawUnsafe(sql)
-        console.log(sql)
 
         // Validação para verificar se o insert funcionou no DB
         if(resultStatus)
@@ -131,7 +138,7 @@ const uptadeFile = async function (){
             return false
 
     } catch (error) {
-        
+
         return false
 
     }
@@ -173,7 +180,7 @@ const selectAllFilmes = async function(){
 }
 
 // função para buscar um filme no BD filtrando pelo ID
-const selectById = async function(){
+const selectById = async function(id){
 
     try {
         //Script SQL para filtrar pelo ID
@@ -185,6 +192,7 @@ const selectById = async function(){
         return rsFilme;
 
     } catch (error) {
+        console.log(error)
         return false;
     }
     

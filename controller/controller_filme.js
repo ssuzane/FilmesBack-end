@@ -23,10 +23,11 @@ const setInserirNovoFilme = async function(dadosFilmes, contentType){
         
             if(dadosFilmes.nome == ''                 || dadosFilmes.nome == undefined             ||dadosFilmes.nome == null             || dadosFilmes.nome.length > 80             || 
             dadosFilmes.sinopse == ''                 || dadosFilmes.sinopse == undefined          ||dadosFilmes.sinopse == null          || dadosFilmes.sinopse.length > 65000       ||
-            dadosFilmes.duracao == ''           || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.length > 8           ||
+            dadosFilmes.duracao == ''                 || dadosFilmes.duracao == undefined          || dadosFilmes.duracao == null         || dadosFilmes.duracao.length > 8           ||
             dadosFilmes.data_lancamento == ''         || dadosFilmes.data_lancamento == undefined  ||dadosFilmes.data_lancamento == null  || dadosFilmes.data_lancamento.length != 10 ||
             dadosFilmes.foto_capa == ''               || dadosFilmes.foto_capa == undefined        ||dadosFilmes.foto_capa == null        || dadosFilmes.foto_capa.length > 200       ||
-            dadosFilmes.valor_unitario.legth > 6 
+            dadosFilmes.valor_unitario.legth > 6      || dadosFilmes.id_classificacao == ''        ||dadosFilmes.id_classificacao == null || dadosFilmes.id_classificacao > 12        || dadosFilmes.id_classificacao == undefined
+
             ){
         
                 
@@ -87,7 +88,8 @@ const setInserirNovoFilme = async function(dadosFilmes, contentType){
 }
 
 // função para validar e atualizar um filme 
-const setAtulizarFilme = async function(){
+const setAtulizarFilme = async function(dadosFilme, contentType, idFilme){
+
     try {
         
         if(String(contentType).toLowerCase() == 'application/json'){
@@ -101,7 +103,8 @@ const setAtulizarFilme = async function(){
                 dadosFilme.duracao == ''                  || dadosFilme.duracao == undefined           || dadosFilme.duracao.length > 8             || 
                 dadosFilme.data_lancamento == ''          || dadosFilme.data_lancamento == undefined   || dadosFilme.data_lancamento.length > 10    || 
                 dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined         || dadosFilme.foto_capa.length > 200         ||
-                dadosFilme.valor_unitario.length > 5  
+                dadosFilme.valor_unitario.length > 5      || dadosFilme.id_classificacao == ''         || dadosFilme.id_classificacao == null      || dadosFilme.id_classificacao > 12  ||
+                dadosFilme.id_classificacao == undefined      
              ){
                 
                 return message.ERROR_REQUIERED_FIELDS // 400
@@ -128,16 +131,16 @@ const setAtulizarFilme = async function(){
                 if(dadosValidated){
         
                     //Envia os dados para a model inserir no BD
-                    let filmeAtualizado = await filmesDAO.uptadeFile(dadosFilme, idFilme)
+                    let filmeAtualizado = await filmeDAO.uptadeFile(dadosFilme, idFilme)
                                            
                     // Adiciona o ID do Filme no JSON para retornar
                     dadosFilme.id = idFilme
 
                     //Valida se o BD inseriu corretamente os dados
                     if(filmeAtualizado){
-                        resultDadosFilme.status = ERROR_Messages.SUCCESS_UPDATED_ITEM.status
-                        resultDadosFilme.status_code = ERROR_Messages.SUCCESS_UPDATED_ITEM.status_code
-                        resultDadosFilme.ERROR_Messages = ERROR_Messages.SUCCESS_UPDATED_ITEM.ERROR_Messages
+                        resultDadosFilme.status = message.SUCESS_CREATED_ITEM.status
+                        resultDadosFilme.status_code = message.SUCESS_CREATED_ITEM.status_code
+                        resultDadosFilme.ERROR_message = message.SUCESS_CREATED_ITEM.message
                         resultDadosFilme.filme = dadosFilme
                         return resultDadosFilme
                     }else {
@@ -160,6 +163,8 @@ const setAtulizarFilme = async function(){
         }
 
     } catch (error) {
+
+        //console.log(error)
         message.ERRO_INTERNAL_SERVER // 500
     }
 
@@ -187,7 +192,7 @@ const setExcluirFilme = async function(){
 
         } else {
             
-            let resultDados = await filmesDAO.deleteFilmes(idFilme)
+            let resultDados = await filmeDAO.deleteFilmes(idFilme)
 
             // Validação para verificar se os dados no servidor foram processados
             if(resultDados){                
@@ -236,10 +241,10 @@ const getListarFilmes = async function(){
 }
 
 // função para buscar um filme pelo ID
-const getBuscarFilmes = async function(){
+const getBuscarFilmes = async function(id){
     let filmesJson = {}
 
-    let dadosFilmes = await filmeDAO.selectById()
+    let dadosFilmes = await filmeDAO.selectById(id)
 
     if (dadosFilmes) {
         if (dadosFilmes.length > 0) {
