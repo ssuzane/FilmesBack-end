@@ -104,7 +104,7 @@ const setAtulizarFilme = async function(){
                 dadosFilme.valor_unitario.length > 5  
              ){
                 
-                return ERROR_Message.ERROR_REQUIRED_FIELDS // 400
+                return message.ERROR_REQUIERED_FIELDS // 400
                 
             }else{
                 
@@ -203,7 +203,7 @@ const setExcluirFilme = async function(){
         }
 
     } catch (error) {
-        ERROR_Messages.ERROR_INTERNAL_SERVER // 500
+        message.ERRO_INTERNAL_SERVER // 500
     }
 
 
@@ -250,10 +250,10 @@ const getBuscarFilmes = async function(){
             return filmesJson
 
         } else {
-            return ERROR_Messages.ERROR_NOTFOUND
+            return message.ERROR_NOT_FOUND
         }
     } else {
-        return ERROR_Messages.ERROR_INTERNAL_SERVER_DB
+        return message.ERRO_INTERNAL_SERVER_DB
     }
 }
 
@@ -263,7 +263,7 @@ const getBuscarFilme = async function(id) {
     let filmeJson = {}
 
     if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
-        return ERROR_Messages.ERROR_INVALID_ID
+        return message.ERROR_INVALID_ID
     } else {
         let dadosFilme = await filmesDAO.selectFilmeById(idFilme)
 
@@ -276,9 +276,9 @@ const getBuscarFilme = async function(id) {
                 return filmeJson
 
             } else
-                return ERROR_Messages.ERROR_NOTFOUND
+                return message.ERROR_NOT_FOUND
         } else {
-            return ERROR_Messages.ERROR_INTERNAL_SERVER_DB
+            return message.ERRO_INTERNAL_SERVER_DB
         }
     }
 }
