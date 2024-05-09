@@ -104,7 +104,7 @@ const setAtulizarFilme = async function(){
                 dadosFilme.valor_unitario.length > 5  
              ){
                 
-                return ERROR_Messages.ERROR_REQUIRED_FIELDS // 400
+                return ERROR_Message.ERROR_REQUIRED_FIELDS // 400
                 
             }else{
                 
@@ -117,7 +117,7 @@ const setAtulizarFilme = async function(){
                     ){    
         
                         if(dadosFilme.data_relancamento.length != 10)
-                            return ERROR_Messages.ERROR_REQUIRED_FIELDS // 400
+                            return message.ERROR_REQUIERED_FIELDS// 400
                         else
                             dadosValidated = true
         
@@ -142,25 +142,25 @@ const setAtulizarFilme = async function(){
                         return resultDadosFilme
                     }else {
 
-                        return ERROR_Messages.ERROR_INTERNAL_SERVER_DB // 500
+                        return message.ERRO_INTERNAL_SERVER_DB // 500
 
                     }
         
         
                 } else {
 
-                    return ERROR_Messages.ERROR_REQUIRED_FIELDS // 400
+                    return message.ERROR_REQUIERED_FIELDS // 400
 
                 }
                 
             }
     
         }else{
-            return ERROR_Messages.ERROR_CONTENT_TYPE // 415
+            return message.ERRO_CONTENT_TYPE // 415
         }
 
     } catch (error) {
-        ERROR_Messages.ERROR_INTERNAL_SERVER // 500
+        message.ERRO_INTERNAL_SERVER // 500
     }
 
 }
@@ -178,12 +178,12 @@ const setExcluirFilme = async function(){
         // Validação para ID vazio, indefinido
         if(idFilme == '' || idFilme == undefined || isNaN(idFilme)){
 
-            return ERROR_Messages.ERROR_INVALID_ID // 400
+            return message.ERROR_INVALID_ID // 400
 
         // Validação se o item existe 
         } else if (validacaoFilmes.status == false) {
             
-            return ERROR_Messages.ERROR_NOT_FOUND // 404
+            return message.ERROR_NOT_FOUND // 404
 
         } else {
             
@@ -192,11 +192,11 @@ const setExcluirFilme = async function(){
             // Validação para verificar se os dados no servidor foram processados
             if(resultDados){                
                     
-                return ERROR_Messages.SUCCESS_DELETED_ITEM // 200
+                return message.SUCESS_CREATED_ITEM // 200
 
             } else {
 
-                return ERROR_Messages.ERROR_INTERNAL_SERVER_DB // 500
+                return message.ERRO_INTERNAL_SERVER_DB // 500
 
             }
 
