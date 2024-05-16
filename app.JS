@@ -174,19 +174,48 @@ app.get('/v2/AcmeFilmes/listarAtores', cors(), async function(request, response)
 
 })
 
+app.get('/v2/AcmeFilmes/BuscarAtor/:id', cors(), async function(request, response){
 
 
+    let idAtor = request.params.id
+
+    let dadosAtor = await controllerAtor.getBuscarAtor(idAtor)
+
+    if(dadosAtor){
+        response.json(dadosAtor)
+        response.status(200)
+    }else{
+        request.json({message: 'Ator não encontrado. '})
+        response.status(400)
+    }
+})
+
+app.post('/v2/AcmeFilmes/IserirAtor', cors(), bodyParserJSON, async function(resquest, response){
+
+    let contentType = resquest.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDadosNovoAtor = await controllerAtor.setIserirNovoAtor(dadosBody, contentType)
+
+    response.status(resultDadosNovoAtor.status_code)
+    response.json(resultDadosNovoAtor)
+})
 
 
+// app.post('/v2/AcmeFilmes/Inserirfilme', cors(), bodyParserJSON, async function(request, response){
 
+//     //recebe a content-type  como o tipo de dados encaminhado da requisição
+//     let contentType = request.headers['content-type']
 
+//     //recebe dodos os dados da requisição pelo body
+//     let dadosBody = request.body
 
+//     //Encaminhar od dados para o controller enviar para o DAO
+//     let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType)
 
-
-
-
-
-
+//     response.status(resultDadosNovoFilme.status_code)
+//     response.json(resultDadosNovoFilme)
 
 
 

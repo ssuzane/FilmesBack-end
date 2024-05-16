@@ -30,6 +30,60 @@ const selectAllActors = async function(){
 
 }
 
+const selectByIdActors = async function(id){
+
+     try {
+        let sql = `select * from tbl_ator where id = ${id}`
+
+        let rsAtor = await prisma.$queryRawUnsafe(sql)
+        
+        return rsAtor
+     }catch(error){
+        return false;
+     }
+}
+
+const insertAtor = async function(dadosAtor){
+    try{
+
+        let sql
+
+        if(dadosAtor){
+            sql = `insert into tbl_ator (
+                nome,
+                foto,
+                biografia,
+                data_nascimento,
+                id_sexo
+            ) values(
+
+                '${dadosAtor.nome}',
+                '${dadosAtor.foto}',
+                '${dadosAtor.biografia}',
+                '${dadosAtor.data_nascimento}',
+                '${dadosAtor.id_sexo}',
+
+
+            )`
+        } 
+
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if(result)
+            return true
+        else
+            return false
+
+
+    } catch(erro){
+        return false
+    }
+}
+
+
+
 module.exports = {
-    selectAllActors
+    selectAllActors,
+    selectByIdActors,
+    insertAtor
 }

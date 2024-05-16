@@ -260,6 +260,7 @@ const getBuscarFilmes = async function(id){
         return message.ERRO_INTERNAL_SERVER_DB
     }
 }
+
 // função para buscar filme pelo id v2
 const getBuscarFilme = async function(id) {
     let idFilme = id

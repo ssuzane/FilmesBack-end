@@ -184,11 +184,11 @@ const selectById = async function(id){
 
     try {
         
-        let sql = `select * from tbl_filme where id = ${id}`;
+        let sql = `select * from tbl_filme where id = ${id}`
     
-        let rsFilme = await prisma.$queryRawUnsafe(sql);
+        let rsFilme = await prisma.$queryRawUnsafe(sql)
 
-        return rsFilme;
+        return rsFilme
 
     } catch (error) {
         console.log(error)
